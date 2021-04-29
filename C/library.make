@@ -1,4 +1,5 @@
 # Vulcalien's generic library Makefile
+# version 0.1.0
 #
 # Supported systems:
 # - Linux
