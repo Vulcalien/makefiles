@@ -1,4 +1,4 @@
-# Vulcalien's generic library Makefile
+# Vulcalien's Static Library Makefile
 # version 0.1.0
 #
 # Supported systems:
@@ -7,8 +7,8 @@
 #
 # Linux to Windows cross-compilation also supported
 
-# --- Config ---
-OUT_FILENAME := libvulcalien
+# ========= CONFIG =========
+OUT_FILENAME := libname
 
 SRC_DIR := src
 OBJ_DIR := obj
@@ -16,16 +16,13 @@ BIN_DIR := bin
 
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall -pedantic
-LDFLAGS  := -Llib
-LDLIBS   :=
-# !-- Config ---
 
-# --- Platform Dependent ---
+# ========= OS SPECIFIC =========
 UNI_OBJ_EXT := .o
 UNI_OUT_EXT := .a
 
 WIN_OBJ_EXT := .obj
-WIN_OUT_EXT := .lib
+WIN_OUT_EXT := -win.a
 
 ifeq ($(OS),Windows_NT)
 	CC      := gcc
@@ -42,8 +39,8 @@ else
 	RM      := rm
 	RMFLAGS := -rfv
 endif
-# !-- Platform Dependent ---
 
+# ========= OTHER =========
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%$(OBJ_EXT))
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_EXT)
@@ -51,9 +48,6 @@ OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_EXT)
 .PHONY: all build linux-to-windows clean
 
 all: build
-
-linux-to-windows:
-	make CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT)
 
 build: $(OUT)
 
@@ -68,5 +62,8 @@ $(BIN_DIR) $(OBJ_DIR):
 
 clean:
 	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
+
+linux-to-windows:
+	make CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT)
 
 -include $(OBJ:$(OBJ_EXT)=.d)

@@ -1,4 +1,4 @@
-# Vulcalien's executable Makefile
+# Vulcalien's Executable Makefile
 # version 0.1.0
 #
 # Supported systems:
