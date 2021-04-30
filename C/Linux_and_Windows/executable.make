@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.1.0
+# version 0.1.1
 #
 # Supported systems:
 # - Linux
@@ -81,6 +81,6 @@ clean:
 	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
 
 linux-to-windows:
-	make CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT) LDFLAGS=$(WIN_LDFLAGS) LDLIBS=$(WIN_LDLIBS)
+	make build CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT) LDFLAGS=$(WIN_LDFLAGS) LDLIBS=$(WIN_LDLIBS)
 
 -include $(OBJ:$(OBJ_EXT)=.d)

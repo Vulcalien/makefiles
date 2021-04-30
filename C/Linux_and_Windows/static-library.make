@@ -1,5 +1,5 @@
 # Vulcalien's Static Library Makefile
-# version 0.1.0
+# version 0.1.1
 #
 # Supported systems:
 # - Linux
@@ -45,7 +45,7 @@ SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%$(OBJ_EXT))
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_EXT)
 
-.PHONY: all build linux-to-windows clean
+.PHONY: all build clean linux-to-windows
 
 all: build
 
@@ -64,6 +64,6 @@ clean:
 	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
 
 linux-to-windows:
-	make CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT)
+	make build CC=x86_64-w64-mingw32-gcc OBJ_EXT=$(WIN_OBJ_EXT) OUT_EXT=$(WIN_OUT_EXT)
 
 -include $(OBJ:$(OBJ_EXT)=.d)
