@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.0
+# version 0.1.1
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -32,26 +32,26 @@ WIN_STATIC_EXT := -win.a
 WIN_SHARED_EXT := .dll
 
 ifeq ($(OS),Windows_NT)
-	CC      := gcc
+	CC := gcc
 
 	OBJ_EXT    := $(WIN_OBJ_EXT)
 	STATIC_EXT := $(WIN_STATIC_EXT)
 	SHARED_EXT := $(WIN_SHARED_EXT)
 
-	LDFLAGS  := $(WIN_LDFLAGS)
-	LDLIBS   := $(WIN_LDLIBS)
+	LDFLAGS := $(WIN_LDFLAGS)
+	LDLIBS  := $(WIN_LDLIBS)
 
 	RM      := del
 	RMFLAGS := /Q
 else
-	CC      := gcc
+	CC := gcc
 
 	OBJ_EXT    := $(UNI_OBJ_EXT)
 	STATIC_EXT := $(UNI_STATIC_EXT)
 	SHARED_EXT := $(UNI_SHARED_EXT)
 
-	LDFLAGS  := $(UNI_LDFLAGS)
-	LDLIBS   := $(UNI_LDLIBS)
+	LDFLAGS := $(UNI_LDFLAGS)
+	LDLIBS  := $(UNI_LDLIBS)
 
 	RM      := rm
 	RMFLAGS := -rfv
