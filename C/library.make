@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.1
+# version 0.1.2
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -11,8 +11,13 @@ SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
 
+OBJ_STATIC_DIR := $(OBJ_DIR)/static
+OBJ_SHARED_DIR := $(OBJ_DIR)/shared
+
 CPPFLAGS := -Iinclude -MMD -MP
-CFLAGS   := -Wall -pedantic
+
+CFLAGS_STATIC := -Wall -pedantic
+CFLAGS_SHARED := -fPIC -Wall -pedantic
 
 # Unix LDFLAGS and LDLIBS
 UNI_LDFLAGS := -shared -Llib
@@ -59,7 +64,9 @@ endif
 
 # ========= OTHER =========
 SRC := $(wildcard $(SRC_DIR)/*.c)
-OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%$(OBJ_EXT))
+
+OBJ_STATIC := $(SRC:$(SRC_DIR)/%.c=$(OBJ_STATIC_DIR)/%$(OBJ_EXT))
+OBJ_SHARED := $(SRC:$(SRC_DIR)/%.c=$(OBJ_SHARED_DIR)/%$(OBJ_EXT))
 
 OUT_STATIC := $(BIN_DIR)/$(OUT_FILENAME)$(STATIC_EXT)
 OUT_SHARED := $(BIN_DIR)/$(OUT_FILENAME)$(SHARED_EXT)
@@ -72,19 +79,23 @@ build-static: $(OUT_STATIC)
 
 build-shared: $(OUT_SHARED)
 
-$(OUT_STATIC): $(OBJ) | $(BIN_DIR)
+$(OUT_STATIC): $(OBJ_STATIC) | $(BIN_DIR)
 	$(AR) rcs $@ $^
 
-$(OUT_SHARED): $(OBJ) | $(BIN_DIR)
+$(OUT_SHARED): $(OBJ_SHARED) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-$(OBJ_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+$(OBJ_STATIC_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_STATIC_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS_STATIC) -c $< -o $@
 
-$(BIN_DIR) $(OBJ_DIR):
-	mkdir $@
+$(OBJ_SHARED_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_SHARED_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS_SHARED) -c $< -o $@
+
+$(BIN_DIR) $(OBJ_STATIC_DIR) $(OBJ_SHARED_DIR):
+	mkdir -p $@
 
 clean:
 	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
 
--include $(OBJ:$(OBJ_EXT)=.d)
+-include $(OBJ_STATIC:$(OBJ_EXT)=.d)
+-include $(OBJ_SHARED:$(OBJ_EXT)=.d)
