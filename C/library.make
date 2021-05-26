@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.2
+# version 0.1.3-WIP
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -46,6 +46,9 @@ ifeq ($(OS),Windows_NT)
 	LDFLAGS := $(WIN_LDFLAGS)
 	LDLIBS  := $(WIN_LDLIBS)
 
+	MKDIR      := mkdir
+	MKDIRFLAGS :=
+
 	RM      := del
 	RMFLAGS := /Q
 else
@@ -57,6 +60,9 @@ else
 
 	LDFLAGS := $(UNI_LDFLAGS)
 	LDLIBS  := $(UNI_LDLIBS)
+
+	MKDIR      := mkdir
+	MKDIRFLAGS := -p
 
 	RM      := rm
 	RMFLAGS := -rfv
@@ -92,7 +98,7 @@ $(OBJ_SHARED_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_SHARED_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS_SHARED) -c $< -o $@
 
 $(BIN_DIR) $(OBJ_STATIC_DIR) $(OBJ_SHARED_DIR):
-	mkdir -p $@
+	$(MKDIR) $(MKDIRFLAGS) "$@"
 
 clean:
 	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
