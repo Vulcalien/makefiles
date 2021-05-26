@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.1.2-WIP
+# version 0.1.2
 #
 # Supported systems:
 # - Linux
@@ -44,7 +44,7 @@ ifeq ($(OS),Windows_NT)
 	MKDIRFLAGS :=
 
 	RM      := del
-	RMFLAGS := /Q
+	RMFLAGS := /Q /S
 else
 	CC      := gcc
 	OBJ_EXT := $(UNI_OBJ_EXT)

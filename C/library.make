@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.3-WIP
+# version 0.1.3
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -50,7 +50,7 @@ ifeq ($(OS),Windows_NT)
 	MKDIRFLAGS :=
 
 	RM      := del
-	RMFLAGS := /Q
+	RMFLAGS := /Q /S
 else
 	CC := gcc
 
