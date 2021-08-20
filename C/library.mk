@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.4
+# version 0.1.5
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -24,7 +24,7 @@ OBJ_SHARED_DIR := $(OBJ_DIR)/shared
 CPPFLAGS := -Iinclude -MMD -MP
 
 CFLAGS_STATIC := -Wall -pedantic
-CFLAGS_SHARED := -fPIC -Wall -pedantic
+CFLAGS_SHARED := -fPIC -fvisibility=hidden -Wall -pedantic
 
 ifeq ($(TARGET_OS),UNIX)
 	# UNIX
