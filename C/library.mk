@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.6
+# version 0.1.7
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -17,9 +17,6 @@ OUT_FILENAME := libname
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
-
-OBJ_STATIC_DIR := $(OBJ_DIR)/static
-OBJ_SHARED_DIR := $(OBJ_DIR)/shared
 
 CPPFLAGS := -Iinclude -MMD -MP
 
@@ -69,6 +66,9 @@ endif
 # === OTHER ===
 SRC := $(wildcard $(SRC_DIR)/*.c)
 
+OBJ_STATIC_DIR := $(OBJ_DIR)/static
+OBJ_SHARED_DIR := $(OBJ_DIR)/shared
+
 OBJ_STATIC := $(SRC:$(SRC_DIR)/%.c=$(OBJ_STATIC_DIR)/%$(OBJ_EXT))
 OBJ_SHARED := $(SRC:$(SRC_DIR)/%.c=$(OBJ_SHARED_DIR)/%$(OBJ_EXT))
 
@@ -79,9 +79,7 @@ OUT_SHARED := $(BIN_DIR)/$(OUT_FILENAME)$(SHARED_EXT)
 .PHONY: all build-static build-shared clean
 
 all: build-static build-shared
-
 build-static: $(OUT_STATIC)
-
 build-shared: $(OUT_SHARED)
 
 clean:
