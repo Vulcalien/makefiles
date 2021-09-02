@@ -1,15 +1,16 @@
 # Vulcalien's Library Makefile
-# version 0.1.7
+# version 0.1.8
 #
 # This Makefile can create both
 # Static and Shared libraries
 
-# === TARGET OS ===
+# === DETECT OS ===
 ifeq ($(OS),Windows_NT)
-	TARGET_OS := WINDOWS
+	CURRENT_OS := WINDOWS
 else
-	TARGET_OS := UNIX
+	CURRENT_OS := UNIX
 endif
+TARGET_OS := $(CURRENT_OS)
 
 # ========= EDIT HERE =========
 OUT_FILENAME := libname
@@ -36,30 +37,30 @@ endif
 
 # === OS SPECIFIC ===
 ifeq ($(TARGET_OS),UNIX)
-	# UNIX
 	CC := gcc
 
 	OBJ_EXT    := .o
 	STATIC_EXT := .a
 	SHARED_EXT := .so
-
-	MKDIR      := mkdir
-	MKDIRFLAGS := -p
-
-	RM      := rm
-	RMFLAGS := -rfv
 else ifeq ($(TARGET_OS),WINDOWS)
-	# WINDOWS
 	CC := gcc
 
 	OBJ_EXT    := .obj
 	STATIC_EXT := -win.a
 	SHARED_EXT := .dll
+endif
 
+ifeq ($(CURRENT_OS),UNIX)
+	MKDIR      := mkdir
+	MKDIRFLAGS := -p
+
+	RM      := rm
+	RMFLAGS := -rfv
+else ifeq ($(CURRENT_OS),WINDOWS)
 	MKDIR      := mkdir
 	MKDIRFLAGS :=
 
-	RM      := del
+	RM      := rmdir
 	RMFLAGS := /Q /S
 endif
 
