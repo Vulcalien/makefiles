@@ -1,5 +1,8 @@
 # Vulcalien's Library Makefile
-# version 0.1.8
+# version 0.1.9
+#
+# One Makefile for Unix and Windows
+# Made for the 'gcc' compiler
 #
 # This Makefile can create both
 # Static and Shared libraries
@@ -19,6 +22,8 @@ SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
 
+CC := gcc
+
 CPPFLAGS := -Iinclude -MMD -MP
 
 CFLAGS_STATIC := -Wall -pedantic
@@ -37,16 +42,12 @@ endif
 
 # === OS SPECIFIC ===
 ifeq ($(TARGET_OS),UNIX)
-	CC := gcc
-
 	OBJ_EXT    := .o
 	STATIC_EXT := .a
 	SHARED_EXT := .so
 else ifeq ($(TARGET_OS),WINDOWS)
-	CC := gcc
-
 	OBJ_EXT    := .obj
-	STATIC_EXT := -win.a
+	STATIC_EXT := .a
 	SHARED_EXT := .dll
 endif
 

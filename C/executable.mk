@@ -1,11 +1,8 @@
 # Vulcalien's Executable Makefile
-# version 0.1.3
+# version 0.1.4
 #
 # One Makefile for Unix and Windows
 # Made for the 'gcc' compiler
-#
-# To cross-compile:
-#     make build TARGET_OS=<UNIX or WINDOWS> CC=<cross compiler>
 
 # === DETECT OS ===
 ifeq ($(OS),Windows_NT)
@@ -21,6 +18,8 @@ OUT_FILENAME := exename
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+
+CC := gcc
 
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall -pedantic
@@ -38,13 +37,9 @@ endif
 
 # === OS SPECIFIC ===
 ifeq ($(TARGET_OS),UNIX)
-	CC := gcc
-
 	OBJ_EXT := .o
 	OUT_EXT :=
 else ifeq ($(TARGET_OS),WINDOWS)
-	CC := gcc
-
 	OBJ_EXT := .obj
 	OUT_EXT := .exe
 endif
