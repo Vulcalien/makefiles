@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.1.4
+# version 0.1.5
 #
 # One Makefile for Unix and Windows
 # Made for the 'gcc' compiler
@@ -29,9 +29,17 @@ ifeq ($(TARGET_OS),UNIX)
 	LDFLAGS := -Llib
 	LDLIBS  :=
 else ifeq ($(TARGET_OS),WINDOWS)
-	# WINDOWS
-	LDFLAGS := -Llib
-	LDLIBS  :=
+	ifeq ($(CURRENT_OS),WINDOWS)
+		# WINDOWS
+		LDFLAGS := -Llib
+		LDLIBS  :=
+	else ifeq ($(CURRENT_OS),UNIX)
+		# UNIX to WINDOWS cross-compile
+		CC := x86_64-w64-mingw32-gcc
+
+		LDFLAGS := -Llib
+		LDLIBS  :=
+	endif
 endif
 # =============================
 
