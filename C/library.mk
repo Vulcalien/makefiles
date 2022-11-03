@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.1.10
+# version 0.2.0
 #
 # One Makefile for Unix and Windows
 # Made for the 'gcc' compiler
@@ -21,6 +21,8 @@ OUT_FILENAME := libname
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+
+SRC_SUBDIRS :=
 
 CC := gcc
 
@@ -74,7 +76,8 @@ else ifeq ($(CURRENT_OS),WINDOWS)
 endif
 
 # === OTHER ===
-SRC := $(wildcard $(SRC_DIR)/*.c)
+SRC := $(wildcard $(SRC_DIR)/*.c)\
+       $(foreach DIR,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(DIR)/*.c))
 
 OBJ_STATIC_DIR := $(OBJ_DIR)/static
 OBJ_SHARED_DIR := $(OBJ_DIR)/shared
@@ -84,6 +87,11 @@ OBJ_SHARED := $(SRC:$(SRC_DIR)/%.c=$(OBJ_SHARED_DIR)/%$(OBJ_EXT))
 
 OUT_STATIC := $(BIN_DIR)/$(OUT_FILENAME)$(STATIC_EXT)
 OUT_SHARED := $(BIN_DIR)/$(OUT_FILENAME)$(SHARED_EXT)
+
+OBJ_STATIC_DIRECTORIES := $(OBJ_STATIC_DIR)\
+                          $(foreach DIR,$(SRC_SUBDIRS),$(OBJ_STATIC_DIR)/$(DIR))
+OBJ_SHARED_DIRECTORIES := $(OBJ_SHARED_DIR)\
+                          $(foreach DIR,$(SRC_SUBDIRS),$(OBJ_SHARED_DIR)/$(DIR))
 
 # === TARGETS ===
 .PHONY: all build-static build-shared clean
@@ -101,13 +109,13 @@ $(OUT_STATIC): $(OBJ_STATIC) | $(BIN_DIR)
 $(OUT_SHARED): $(OBJ_SHARED) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-$(OBJ_STATIC_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_STATIC_DIR)
+$(OBJ_STATIC_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_STATIC_DIRECTORIES)
 	$(CC) $(CPPFLAGS) $(CFLAGS_STATIC) -c $< -o $@
 
-$(OBJ_SHARED_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_SHARED_DIR)
+$(OBJ_SHARED_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_SHARED_DIRECTORIES)
 	$(CC) $(CPPFLAGS) $(CFLAGS_SHARED) -c $< -o $@
 
-$(BIN_DIR) $(OBJ_STATIC_DIR) $(OBJ_SHARED_DIR):
+$(BIN_DIR) $(OBJ_STATIC_DIRECTORIES) $(OBJ_SHARED_DIRECTORIES):
 	$(MKDIR) $(MKDIRFLAGS) "$@"
 
 -include $(OBJ_STATIC:$(OBJ_EXT)=.d)

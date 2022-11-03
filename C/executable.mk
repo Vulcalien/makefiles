@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.1.5
+# version 0.2.0
 #
 # One Makefile for Unix and Windows
 # Made for the 'gcc' compiler
@@ -18,6 +18,8 @@ OUT_FILENAME := exename
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+
+SRC_SUBDIRS :=
 
 CC := gcc
 
@@ -67,9 +69,12 @@ else ifeq ($(CURRENT_OS),WINDOWS)
 endif
 
 # === OTHER ===
-SRC := $(wildcard $(SRC_DIR)/*.c)
+SRC := $(wildcard $(SRC_DIR)/*.c)\
+       $(foreach DIR,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(DIR)/*.c))
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%$(OBJ_EXT))
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_EXT)
+
+OBJ_DIRECTORIES := $(OBJ_DIR) $(foreach DIR,$(SRC_SUBDIRS),$(OBJ_DIR)/$(DIR))
 
 # === TARGETS ===
 .PHONY: all run build clean
@@ -87,10 +92,10 @@ clean:
 $(OUT): $(OBJ) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-$(OBJ_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%$(OBJ_EXT): $(SRC_DIR)/%.c | $(OBJ_DIRECTORIES)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR) $(OBJ_DIR):
+$(BIN_DIR) $(OBJ_DIRECTORIES):
 	$(MKDIR) $(MKDIRFLAGS) "$@"
 
 -include $(OBJ:$(OBJ_EXT)=.d)
