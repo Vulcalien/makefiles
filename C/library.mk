@@ -33,18 +33,18 @@ CFLAGS_SHARED := -fPIC -fvisibility=hidden -Wall -pedantic
 
 ifeq ($(TARGET_OS),UNIX)
 	# UNIX
-	LDFLAGS := -shared -Llib
+	LDFLAGS := -shared
 	LDLIBS  :=
 else ifeq ($(TARGET_OS),WINDOWS)
 	ifeq ($(CURRENT_OS),WINDOWS)
 		# WINDOWS
-		LDFLAGS := -shared -Llib
+		LDFLAGS := -shared
 		LDLIBS  :=
 	else ifeq ($(CURRENT_OS),UNIX)
 		# UNIX to WINDOWS cross-compile
 		CC := x86_64-w64-mingw32-gcc
 
-		LDFLAGS := -shared -Llib
+		LDFLAGS := -shared
 		LDLIBS  :=
 	endif
 endif
