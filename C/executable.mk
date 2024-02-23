@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.0
+# version 0.3.1
 
 # === Detect OS ===
 ifeq ($(OS),Windows_NT)
@@ -17,42 +17,42 @@ SRC_DIRS := src
 OBJ_DIR := obj
 BIN_DIR := bin
 
-# === C Flags ===
+# === Compilation ===
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall -pedantic
 
-# === Linker Flags ===
 ifeq ($(TARGET_OS),UNIX)
     # UNIX
+    CC := gcc
+
+    CPPFLAGS +=
+    CFLAGS   +=
+
     LDFLAGS :=
     LDLIBS  :=
 else ifeq ($(TARGET_OS),WINDOWS)
     ifeq ($(CURRENT_OS),WINDOWS)
         # WINDOWS
-        LDFLAGS :=
-        LDLIBS  :=
-    else ifeq ($(CURRENT_OS),UNIX)
-        # UNIX to WINDOWS cross-compile
-        LDFLAGS :=
-        LDLIBS  :=
-    endif
-endif
-
-# === Compilers ===
-ifeq ($(TARGET_OS),UNIX)
-    # UNIX
-    CC := gcc
-else ifeq ($(TARGET_OS),WINDOWS)
-    ifeq ($(CURRENT_OS),WINDOWS)
-        # WINDOWS
         CC := gcc
+
+        CPPFLAGS +=
+        CFLAGS   +=
+
+        LDFLAGS :=
+        LDLIBS  :=
     else ifeq ($(CURRENT_OS),UNIX)
         # UNIX to WINDOWS cross-compile
         CC := x86_64-w64-mingw32-gcc
+
+        CPPFLAGS +=
+        CFLAGS   +=
+
+        LDFLAGS :=
+        LDLIBS  :=
     endif
 endif
 
-# === OS Specific ===
+# === Extensions & Commands ===
 ifeq ($(TARGET_OS),UNIX)
     OBJ_EXT    := o
     OUT_SUFFIX :=

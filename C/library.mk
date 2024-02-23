@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.0
+# version 0.3.1
 
 # === Detect OS ===
 ifeq ($(OS),Windows_NT)
@@ -17,44 +17,50 @@ SRC_DIRS := src
 OBJ_DIR := obj
 BIN_DIR := bin
 
-# === C Flags ===
+# === Compilation ===
 CPPFLAGS := -Iinclude -MMD -MP
 
 CFLAGS_STATIC := -Wall -pedantic
 CFLAGS_SHARED := -Wall -pedantic -fPIC -fvisibility=hidden
 
-# === Linker Flags ===
 ifeq ($(TARGET_OS),UNIX)
     # UNIX
+    CC := gcc
+
+    CPPFLAGS +=
+
+    CFLAGS_STATIC +=
+    CFLAGS_SHARED +=
+
     LDFLAGS := -shared
     LDLIBS  :=
 else ifeq ($(TARGET_OS),WINDOWS)
     ifeq ($(CURRENT_OS),WINDOWS)
         # WINDOWS
-        LDFLAGS := -shared
-        LDLIBS  :=
-    else ifeq ($(CURRENT_OS),UNIX)
-        # UNIX to WINDOWS cross-compile
-        LDFLAGS := -shared
-        LDLIBS  :=
-    endif
-endif
-
-# === Compilers ===
-ifeq ($(TARGET_OS),UNIX)
-    # UNIX
-    CC := gcc
-else ifeq ($(TARGET_OS),WINDOWS)
-    ifeq ($(CURRENT_OS),WINDOWS)
-        # WINDOWS
         CC := gcc
+
+        CPPFLAGS +=
+
+        CFLAGS_STATIC +=
+        CFLAGS_SHARED +=
+
+        LDFLAGS := -shared
+        LDLIBS  :=
     else ifeq ($(CURRENT_OS),UNIX)
         # UNIX to WINDOWS cross-compile
         CC := x86_64-w64-mingw32-gcc
+
+        CPPFLAGS +=
+
+        CFLAGS_STATIC +=
+        CFLAGS_SHARED +=
+
+        LDFLAGS := -shared
+        LDLIBS  :=
     endif
 endif
 
-# === OS Specific ===
+# === Extensions & Commands ===
 ifeq ($(TARGET_OS),UNIX)
     OBJ_EXT    := o
     STATIC_EXT := a
