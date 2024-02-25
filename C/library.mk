@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.1
+# version 0.3.2
 
 # === Detect OS ===
 ifeq ($(OS),Windows_NT)
@@ -10,12 +10,13 @@ endif
 TARGET_OS := $(CURRENT_OS)
 
 # === Basic Info ===
-OUT_FILENAME := exename
+OUT_FILENAME := libname
 
-SRC_DIRS := src
-
+SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+
+SRC_SUBDIRS :=
 
 # === Compilation ===
 CPPFLAGS := -Iinclude -MMD -MP
@@ -90,21 +91,25 @@ endif
 # list of source file extensions
 SRC_EXT := c
 
-OBJ_STATIC_DIR := $(OBJ_DIR)/static
-OBJ_SHARED_DIR := $(OBJ_DIR)/shared
+# list of source directories
+SRC_DIRS := $(SRC_DIR)\
+            $(foreach SUBDIR,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUBDIR))
 
 # list of source files
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
            $(wildcard $(DIR)/*.$(EXT))))
 
-# list of object files
-OBJ_STATIC := $(SRC:%=$(OBJ_STATIC_DIR)/%.$(OBJ_EXT))
-OBJ_SHARED := $(SRC:%=$(OBJ_SHARED_DIR)/%.$(OBJ_EXT))
+OBJ_STATIC_DIR := $(OBJ_DIR)/static
+OBJ_SHARED_DIR := $(OBJ_DIR)/shared
 
-# list of object directories
+# lists of object directories
 OBJ_STATIC_DIRS := $(SRC_DIRS:%=$(OBJ_STATIC_DIR)/%)
 OBJ_SHARED_DIRS := $(SRC_DIRS:%=$(OBJ_SHARED_DIR)/%)
+
+# lists of object files
+OBJ_STATIC := $(SRC:%=$(OBJ_STATIC_DIR)/%.$(OBJ_EXT))
+OBJ_SHARED := $(SRC:%=$(OBJ_SHARED_DIR)/%.$(OBJ_EXT))
 
 # output files
 OUT_STATIC := $(BIN_DIR)/$(OUT_FILENAME).$(STATIC_EXT)

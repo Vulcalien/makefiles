@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.1
+# version 0.3.2
 
 # === Detect OS ===
 ifeq ($(OS),Windows_NT)
@@ -12,10 +12,11 @@ TARGET_OS := $(CURRENT_OS)
 # === Basic Info ===
 OUT_FILENAME := exename
 
-SRC_DIRS := src
-
+SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+
+SRC_SUBDIRS :=
 
 # === Compilation ===
 CPPFLAGS := -Iinclude -MMD -MP
@@ -80,16 +81,20 @@ endif
 # list of source file extensions
 SRC_EXT := c
 
+# list of source directories
+SRC_DIRS := $(SRC_DIR)\
+            $(foreach SUBDIR,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUBDIR))
+
 # list of source files
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
            $(wildcard $(DIR)/*.$(EXT))))
 
-# list of object files
-OBJ := $(SRC:%=$(OBJ_DIR)/%.$(OBJ_EXT))
-
 # list of object directories
 OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/%)
+
+# list of object files
+OBJ := $(SRC:%=$(OBJ_DIR)/%.$(OBJ_EXT))
 
 # output file
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_SUFFIX)
