@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.2
+# version 0.3.3
 
 # === Detect OS ===
 ifeq ($(OS),Windows_NT)
@@ -63,17 +63,11 @@ else ifeq ($(TARGET_OS),WINDOWS)
 endif
 
 ifeq ($(CURRENT_OS),UNIX)
-    MKDIR      := mkdir
-    MKDIRFLAGS := -p
-
-    RM      := rm
-    RMFLAGS := -rfv
+    MKDIR := mkdir -p
+    RM    := rm -rfv
 else ifeq ($(CURRENT_OS),WINDOWS)
-    MKDIR      := mkdir
-    MKDIRFLAGS :=
-
-    RM      := rmdir
-    RMFLAGS := /Q /S
+    MKDIR := mkdir
+    RM    := rmdir /Q /S
 endif
 
 # === Resources ===
@@ -111,7 +105,7 @@ run:
 build: $(OUT)
 
 clean:
-	@$(RM) $(RMFLAGS) $(BIN_DIR) $(OBJ_DIR)
+	@$(RM) $(BIN_DIR) $(OBJ_DIR)
 
 # generate output file
 $(OUT): $(OBJ) | $(BIN_DIR)
@@ -123,6 +117,6 @@ $(OBJ_DIR)/%.c.$(OBJ_EXT): %.c | $(OBJ_DIRS)
 
 # create directories
 $(BIN_DIR) $(OBJ_DIRS):
-	$(MKDIR) $(MKDIRFLAGS) "$@"
+	$(MKDIR) "$@"
 
 -include $(OBJ:.$(OBJ_EXT)=.d)
