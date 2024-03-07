@@ -16,7 +16,7 @@ are needed, `SRC_DIRS` can be manually set).
 ## Commands
 
 | Command           | Result                    | Library | Executable |
-| :---------------- | ----------------------------- | --- | ---------- |
+| ----------------- | ----------------------------- | :-: | :--------: |
 | make              | Build the program/library     | x   | x          |
 | make clean        | Remove all build files        | x   | x          |
 | make run          | Execute the program           |     | x          |
