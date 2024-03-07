@@ -1,9 +1,29 @@
-# Generic Makefiles
+# Makefiles
 
-This repository contains Makefiles that can be used as templates for your
-project.
+Over the years of developing side projects using the C programming
+languages, I've written these two makefiles to make building programs
+and libraries easy. These are `library.mk` and `executable.mk`.
 
-# License
+Both makefiles are setup to support Unix-like systems and Windows,
+allowing for compilation on either system and even Linux-to-Windows
+cross-compilation.
+
+Multiple source directories are supported. By default, the `src`
+directory is used as top-level directories and any subdirectory can be
+listed in the `SRC_SUBDIRS` variable (if multiple top-level directories
+are needed, `SRC_DIRS` can be manually set).
+
+## Commands
+
+| Command           | Result                    | Library | Executable |
+| :---------------- | ----------------------------- | --- | ---------- |
+| make              | Build the program/library     | x   | x          |
+| make clean        | Remove all build files        | x   | x          |
+| make run          | Execute the program           |     | x          |
+| make build-static | Build only the static library | x   |            |
+| make build-shared | Build only the shared library | x   |            |
+
+## License
 <a rel="license"
    href="http://creativecommons.org/publicdomain/zero/1.0/">
     <img src="http://i.creativecommons.org/p/zero/1.0/88x31.png"
