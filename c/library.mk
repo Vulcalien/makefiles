@@ -1,13 +1,7 @@
 # Vulcalien's Library Makefile
-# version 0.3.3
+# version 0.3.4
 
-# === Detect OS ===
-ifeq ($(OS),Windows_NT)
-    CURRENT_OS := WINDOWS
-else
-    CURRENT_OS := UNIX
-endif
-TARGET_OS := $(CURRENT_OS)
+TARGET := UNIX
 
 # === Basic Info ===
 OUT_FILENAME := libname
@@ -24,8 +18,8 @@ CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS_STATIC := -Wall -pedantic
 CFLAGS_SHARED := -Wall -pedantic -fPIC -fvisibility=hidden
 
-ifeq ($(TARGET_OS),UNIX)
-    # UNIX
+ifeq ($(TARGET),UNIX)
+    # UNIX-like
     CC := gcc
 
     CPPFLAGS +=
@@ -35,50 +29,32 @@ ifeq ($(TARGET_OS),UNIX)
 
     LDFLAGS := -shared
     LDLIBS  :=
-else ifeq ($(TARGET_OS),WINDOWS)
-    ifeq ($(CURRENT_OS),WINDOWS)
-        # WINDOWS
-        CC := gcc
+else ifeq ($(TARGET),WINDOWS)
+    # UNIX-like to WINDOWS cross-compile
+    CC := x86_64-w64-mingw32-gcc
 
-        CPPFLAGS +=
+    CPPFLAGS +=
 
-        CFLAGS_STATIC +=
-        CFLAGS_SHARED +=
+    CFLAGS_STATIC +=
+    CFLAGS_SHARED +=
 
-        LDFLAGS := -shared
-        LDLIBS  :=
-    else ifeq ($(CURRENT_OS),UNIX)
-        # UNIX to WINDOWS cross-compile
-        CC := x86_64-w64-mingw32-gcc
-
-        CPPFLAGS +=
-
-        CFLAGS_STATIC +=
-        CFLAGS_SHARED +=
-
-        LDFLAGS := -shared
-        LDLIBS  :=
-    endif
+    LDFLAGS := -shared
+    LDLIBS  :=
 endif
 
 # === Extensions & Commands ===
-ifeq ($(TARGET_OS),UNIX)
+ifeq ($(TARGET),UNIX)
     OBJ_EXT    := o
     STATIC_EXT := a
     SHARED_EXT := so
-else ifeq ($(TARGET_OS),WINDOWS)
+else ifeq ($(TARGET),WINDOWS)
     OBJ_EXT    := obj
     STATIC_EXT := win.a
     SHARED_EXT := dll
 endif
 
-ifeq ($(CURRENT_OS),UNIX)
-    MKDIR := mkdir -p
-    RM    := rm -rfv
-else ifeq ($(CURRENT_OS),WINDOWS)
-    MKDIR := mkdir
-    RM    := rmdir /Q /S
-endif
+MKDIR := mkdir -p
+RM    := rm -rfv
 
 # === Resources ===
 

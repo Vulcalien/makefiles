@@ -1,12 +1,5 @@
 # Vulcalien's Manual Makefile
-# version 0.0.1
-
-# === Detect OS ===
-ifeq ($(OS),Windows_NT)
-    CURRENT_OS := WINDOWS
-else
-    CURRENT_OS := UNIX
-endif
+# version 0.0.2
 
 # === Basic Info ===
 SRC_DIR := .
@@ -15,13 +8,8 @@ OUT_DIR := out
 SRC_SUBDIRS :=
 
 # === Commands ===
-ifeq ($(CURRENT_OS),UNIX)
-    MKDIR := mkdir -p
-    RM    := rm -rfv
-else ifeq ($(CURRENT_OS),WINDOWS)
-    MKDIR := mkdir
-    RM    := rmdir /Q /S
-endif
+MKDIR := mkdir -p
+RM    := rm -rfv
 
 # === Resources ===
 
