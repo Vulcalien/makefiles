@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.4
+# version 0.3.5
 
 TARGET := UNIX
 
@@ -16,27 +16,23 @@ SRC_SUBDIRS :=
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall -pedantic
 
-ifeq ($(TARGET),UNIX)
-    # UNIX-like
-    CC := gcc
+ASFLAGS :=
 
-    CPPFLAGS +=
-    CFLAGS   +=
+ifeq ($(TARGET),UNIX)
+    CC := gcc
+    AS := as
 
     LDFLAGS :=
     LDLIBS  :=
 else ifeq ($(TARGET),WINDOWS)
-    # UNIX-like to WINDOWS cross-compile
     CC := x86_64-w64-mingw32-gcc
-
-    CPPFLAGS +=
-    CFLAGS   +=
+    AS := x86_64-w64-mingw32-as
 
     LDFLAGS :=
     LDLIBS  :=
 endif
 
-# === Extensions & Commands ===
+# === Extensions ===
 ifeq ($(TARGET),UNIX)
     OBJ_EXT    := o
     OUT_SUFFIX :=
@@ -45,13 +41,14 @@ else ifeq ($(TARGET),WINDOWS)
     OUT_SUFFIX := .exe
 endif
 
+# === Commands ===
 MKDIR := mkdir -p
 RM    := rm -rfv
 
 # === Resources ===
 
 # list of source file extensions
-SRC_EXT := c
+SRC_EXT := c s
 
 # list of source directories
 SRC_DIRS := $(SRC_DIR)\
@@ -92,6 +89,10 @@ $(OUT): $(OBJ) | $(BIN_DIR)
 # compile .c files
 $(OBJ_DIR)/%.c.$(OBJ_EXT): %.c | $(OBJ_DIRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+# compile .s files
+$(OBJ_DIR)/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
+	$(AS) $(ASFLAGS) $< -o $@
 
 # create directories
 $(BIN_DIR) $(OBJ_DIRS):
