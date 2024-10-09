@@ -1,19 +1,15 @@
 # Makefiles
 
-Over the years, developing side projects using the C programming
-languages, I've written these two makefiles to make building programs
-and libraries easier. These are `library.mk` and `executable.mk`.
+Various makefiles I've developed over the years: two makefiles for
+building projects written in the C programming language and one for
+generating man pages from AsciiDoc files.
 
-Both makefiles are setup to support Unix-like systems and Windows,
-allowing for compilation on either system and even Linux-to-Windows
-cross-compilation.
+## C makefiles
+The two makefiles for C projects are `library.mk` and `executable.mk`.
+`library.mk` produces static and shared library files, while
+`executable.mk` produces an executable file.
 
-Multiple source directories are supported. By default, the `src`
-directory is used as top-level directory and any subdirectory can be
-listed in the `SRC_SUBDIRS` variable (if multiple top-level directories
-are needed, `SRC_DIRS` can be manually set).
-
-## Commands
+These make targets are available:
 
 | Command           | Result                    | Library | Executable |
 | ----------------- | ----------------------------- | :-: | :--------: |
@@ -23,12 +19,27 @@ are needed, `SRC_DIRS` can be manually set).
 | make build-static | Build only the static library | x   |            |
 | make build-shared | Build only the shared library | x   |            |
 
-## License
-To avoid discouraging anyone that might find these files useful, I
-release them under the CC0 public domain licence.
+### Source subdirectories
+Subdirectories of the top-level source directory containing code to be
+compiled need to be listed in the `SRC_SUBDIRS` variable.
 
-<a rel="license"
-   href="http://creativecommons.org/publicdomain/zero/1.0/">
-    <img src="http://i.creativecommons.org/p/zero/1.0/88x31.png"
-         style="border-style: none;" alt="CC0"/>
-</a>
+For example, to compile files in `src`, `src/foo` and `src/foo/bar`
+write the following:
+```make
+SRC_DIR := src
+...
+SRC_SUBDIRS := foo foo/bar
+```
+
+### Cross-compilation
+By passing the `TARGET=WINDOWS` argument to make, the makefiles will
+produce output for Windows, provided that the appropriate cross-compiler
+is installed.
+
+## Man pages makefile
+The `manuals.mk` makefile converts AsciiDoc files into man pages.
+Similarly to the C makefiles, it supports source subdirectories.
+
+## License
+I release these makefiles under the [CC0 public domain
+license](https://creativecommons.org/publicdomain/zero/1.0/).
