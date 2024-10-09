@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.4
+# version 0.3.5
 
 TARGET := UNIX
 
@@ -18,31 +18,24 @@ CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS_STATIC := -Wall -pedantic
 CFLAGS_SHARED := -Wall -pedantic -fPIC -fvisibility=hidden
 
+ASFLAGS_STATIC :=
+ASFLAGS_SHARED :=
+
 ifeq ($(TARGET),UNIX)
-    # UNIX-like
     CC := gcc
-
-    CPPFLAGS +=
-
-    CFLAGS_STATIC +=
-    CFLAGS_SHARED +=
+    AS := as
 
     LDFLAGS := -shared
     LDLIBS  :=
 else ifeq ($(TARGET),WINDOWS)
-    # UNIX-like to WINDOWS cross-compile
     CC := x86_64-w64-mingw32-gcc
-
-    CPPFLAGS +=
-
-    CFLAGS_STATIC +=
-    CFLAGS_SHARED +=
+    AS := x86_64-w64-mingw32-as
 
     LDFLAGS := -shared
     LDLIBS  :=
 endif
 
-# === Extensions & Commands ===
+# === Extensions ===
 ifeq ($(TARGET),UNIX)
     OBJ_EXT    := o
     STATIC_EXT := a
@@ -53,13 +46,14 @@ else ifeq ($(TARGET),WINDOWS)
     SHARED_EXT := dll
 endif
 
+# === Commands ===
 MKDIR := mkdir -p
 RM    := rm -rfv
 
 # === Resources ===
 
 # list of source file extensions
-SRC_EXT := c
+SRC_EXT := c s
 
 # list of source directories
 SRC_DIRS := $(SRC_DIR)\
@@ -112,6 +106,14 @@ $(OBJ_STATIC_DIR)/%.c.$(OBJ_EXT): %.c | $(OBJ_STATIC_DIRS)
 # compile .c files for shared library
 $(OBJ_SHARED_DIR)/%.c.$(OBJ_EXT): %.c | $(OBJ_SHARED_DIRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS_SHARED) -c $< -o $@
+
+# compile .s files for static library
+$(OBJ_STATIC_DIR)/%.s.$(OBJ_EXT): %.s | $(OBJ_STATIC_DIRS)
+	$(AS) $(ASFLAGS_STATIC) $< -o $@
+
+# compile .s files for shared library
+$(OBJ_SHARED_DIR)/%.s.$(OBJ_EXT): %.s | $(OBJ_SHARED_DIRS)
+	$(AS) $(ASFLAGS_SHARED) $< -o $@
 
 # create directories
 $(BIN_DIR) $(OBJ_STATIC_DIRS) $(OBJ_SHARED_DIRS):
