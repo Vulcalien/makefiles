@@ -3,7 +3,10 @@
 
 TARGET := UNIX
 
-# === Basic Info ===
+# ==================================================================== #
+#                              Basic Info                              #
+# ==================================================================== #
+
 OUT_FILENAME := exename
 
 SRC_DIR := src
@@ -12,7 +15,10 @@ BIN_DIR := bin
 
 SRC_SUBDIRS :=
 
-# === Compilation ===
+# ==================================================================== #
+#                             Compilation                              #
+# ==================================================================== #
+
 CPPFLAGS := -Iinclude -MMD -MP
 CFLAGS   := -Wall -pedantic
 
@@ -32,7 +38,10 @@ else ifeq ($(TARGET),WINDOWS)
     LDLIBS  :=
 endif
 
-# === Extensions ===
+# ==================================================================== #
+#                        Extensions & Commands                         #
+# ==================================================================== #
+
 ifeq ($(TARGET),UNIX)
     OBJ_EXT    := o
     OUT_SUFFIX :=
@@ -41,11 +50,12 @@ else ifeq ($(TARGET),WINDOWS)
     OUT_SUFFIX := .exe
 endif
 
-# === Commands ===
 MKDIR := mkdir -p
 RM    := rm -rfv
 
-# === Resources ===
+# ==================================================================== #
+#                              Resources                               #
+# ==================================================================== #
 
 # list of source file extensions
 SRC_EXT := c s
@@ -68,7 +78,9 @@ OBJ := $(SRC:%=$(OBJ_DIR)/%.$(OBJ_EXT))
 # output file
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_SUFFIX)
 
-# === Targets ===
+# ==================================================================== #
+#                               Targets                                #
+# ==================================================================== #
 
 .PHONY: all run build clean
 

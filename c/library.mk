@@ -3,7 +3,10 @@
 
 TARGET := UNIX
 
-# === Basic Info ===
+# ==================================================================== #
+#                              Basic Info                              #
+# ==================================================================== #
+
 OUT_FILENAME := libname
 
 SRC_DIR := src
@@ -12,7 +15,10 @@ BIN_DIR := bin
 
 SRC_SUBDIRS :=
 
-# === Compilation ===
+# ==================================================================== #
+#                             Compilation                              #
+# ==================================================================== #
+
 CPPFLAGS := -Iinclude -MMD -MP
 
 CFLAGS_STATIC := -Wall -pedantic
@@ -35,7 +41,10 @@ else ifeq ($(TARGET),WINDOWS)
     LDLIBS  :=
 endif
 
-# === Extensions ===
+# ==================================================================== #
+#                        Extensions & Commands                         #
+# ==================================================================== #
+
 ifeq ($(TARGET),UNIX)
     OBJ_EXT    := o
     STATIC_EXT := a
@@ -46,11 +55,12 @@ else ifeq ($(TARGET),WINDOWS)
     SHARED_EXT := dll
 endif
 
-# === Commands ===
 MKDIR := mkdir -p
 RM    := rm -rfv
 
-# === Resources ===
+# ==================================================================== #
+#                              Resources                               #
+# ==================================================================== #
 
 # list of source file extensions
 SRC_EXT := c s
@@ -79,7 +89,9 @@ OBJ_SHARED := $(SRC:%=$(OBJ_SHARED_DIR)/%.$(OBJ_EXT))
 OUT_STATIC := $(BIN_DIR)/$(OUT_FILENAME).$(STATIC_EXT)
 OUT_SHARED := $(BIN_DIR)/$(OUT_FILENAME).$(SHARED_EXT)
 
-# === Targets ===
+# ==================================================================== #
+#                               Targets                                #
+# ==================================================================== #
 
 .PHONY: all build-static build-shared clean
 
