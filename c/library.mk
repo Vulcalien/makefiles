@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.5
+# version 0.3.6
 
 TARGET := UNIX
 
@@ -129,7 +129,7 @@ $(OBJ_SHARED_DIR)/%.s.$(OBJ_EXT): %.s | $(OBJ_SHARED_DIRS)
 
 # create directories
 $(BIN_DIR) $(OBJ_STATIC_DIRS) $(OBJ_SHARED_DIRS):
-	$(MKDIR) "$@"
+	$(MKDIR) $@
 
 -include $(OBJ_STATIC:.$(OBJ_EXT)=.d)
 -include $(OBJ_SHARED:.$(OBJ_EXT)=.d)

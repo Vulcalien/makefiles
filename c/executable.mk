@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.5
+# version 0.3.6
 
 TARGET := UNIX
 
@@ -108,6 +108,6 @@ $(OBJ_DIR)/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
 
 # create directories
 $(BIN_DIR) $(OBJ_DIRS):
-	$(MKDIR) "$@"
+	$(MKDIR) $@
 
 -include $(OBJ:.$(OBJ_EXT)=.d)
