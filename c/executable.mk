@@ -59,8 +59,7 @@ RM    := rm -rfv
 
 SRC_EXT := c s
 
-SRC_DIRS := $(SRC_DIR)\
-            $(foreach SUBDIR,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUBDIR))
+SRC_DIRS := $(SRC_DIR) $(foreach SUB,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUB))
 
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
