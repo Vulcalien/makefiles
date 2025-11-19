@@ -1,5 +1,5 @@
 # Vulcalien's Executable Makefile
-# version 0.3.6
+# version 0.3.7
 
 TARGET := UNIX
 
@@ -57,25 +57,19 @@ RM    := rm -rfv
 #                              Resources                               #
 # ==================================================================== #
 
-# list of source file extensions
 SRC_EXT := c s
 
-# list of source directories
 SRC_DIRS := $(SRC_DIR)\
             $(foreach SUBDIR,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUBDIR))
 
-# list of source files
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
            $(wildcard $(DIR)/*.$(EXT))))
 
-# list of object directories
 OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/%)
 
-# list of object files
 OBJ := $(SRC:%=$(OBJ_DIR)/%.$(OBJ_EXT))
 
-# output file
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_SUFFIX)
 
 # ==================================================================== #
