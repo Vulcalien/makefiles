@@ -19,7 +19,7 @@ SRC_SUBDIRS :=
 #                             Compilation                              #
 # ==================================================================== #
 
-CPPFLAGS := -Iinclude -MMD -MP
+CPPFLAGS := -MMD -MP -Iinclude
 CFLAGS   := -Wall -pedantic
 
 ASFLAGS :=
