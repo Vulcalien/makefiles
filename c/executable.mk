@@ -60,15 +60,13 @@ RM    := rm -rfv
 SRC_EXT := c s
 
 SRC_DIRS := $(SRC_DIR) $(foreach SUB,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUB))
+OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/%)
 
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
            $(wildcard $(DIR)/*.$(EXT))))
 
-OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/%)
-
 OBJ := $(SRC:%=$(OBJ_DIR)/%.$(OBJ_EXT))
-
 OUT := $(BIN_DIR)/$(OUT_FILENAME)$(OUT_SUFFIX)
 
 # ==================================================================== #

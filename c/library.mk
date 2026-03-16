@@ -65,13 +65,12 @@ RM    := rm -rfv
 SRC_EXT := c s
 
 SRC_DIRS := $(SRC_DIR) $(foreach SUB,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUB))
+OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/static/%)\
+            $(SRC_DIRS:%=$(OBJ_DIR)/shared/%)
 
 SRC := $(foreach DIR,$(SRC_DIRS),\
          $(foreach EXT,$(SRC_EXT),\
            $(wildcard $(DIR)/*.$(EXT))))
-
-OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/static/%)\
-            $(SRC_DIRS:%=$(OBJ_DIR)/shared/%)
 
 OBJ_STATIC := $(SRC:%=$(OBJ_DIR)/static/%.$(OBJ_EXT))
 OBJ_SHARED := $(SRC:%=$(OBJ_DIR)/shared/%.$(OBJ_EXT))
