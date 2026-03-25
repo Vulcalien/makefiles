@@ -1,39 +1,45 @@
 # Vulcalien's Manual Makefile
-# version 0.0.2
+# version 0.1.0
 
-# === Basic Info ===
+# ==================================================================== #
+#                              Basic Info                              #
+# ==================================================================== #
+
 SRC_DIR := .
 OUT_DIR := out
 
 SRC_SUBDIRS :=
 
-# === Commands ===
+# ==================================================================== #
+#                               Commands                               #
+# ==================================================================== #
+
 MKDIR := mkdir -p
 RM    := rm -rfv
 
-# === Resources ===
+# ==================================================================== #
+#                              Resources                               #
+# ==================================================================== #
 
-# list of source directories
-SRC_DIRS := $(SRC_DIR)\
-            $(foreach SUBDIR,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUBDIR))
+SRC_DIRS := $(SRC_DIR) $(foreach SUB,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUB))
 
-# list of AsciiDoc files
-ADOC := $(foreach DIR,$(SRC_DIRS),\
-          $(wildcard $(DIR)/*.adoc))
+SRC := $(foreach DIR,$(SRC_DIRS),\
+         $(wildcard $(DIR)/*.adoc))
 
-# === Targets ===
+# ==================================================================== #
+#                               Targets                                #
+# ==================================================================== #
 
-.PHONY: all asciidoc clean
+.PHONY: all build clean
 
-all: asciidoc
+all: build
 
-# convert .adoc files
-asciidoc: | $(OUT_DIR)
-	asciidoctor -D $(OUT_DIR) -b manpage $(ADOC)
+build: | $(OUT_DIR)
+	asciidoctor -D $(OUT_DIR) -b manpage $(SRC)
 
 clean:
 	@$(RM) $(OUT_DIR)
 
 # create directories
 $(OUT_DIR):
-	$(MKDIR) "$@"
+	$(MKDIR) $@
