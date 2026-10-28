@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.7
+# version 0.3.8
 
 TARGET := UNIX
 
@@ -19,23 +19,28 @@ SRC_SUBDIRS :=
 #                             Compilation                              #
 # ==================================================================== #
 
+ASFLAGS_STATIC :=
+ASFLAGS_SHARED :=
+
 CPPFLAGS := -MMD -MP -Iinclude
 
 CFLAGS_STATIC := -Wall -pedantic
 CFLAGS_SHARED := -Wall -pedantic -fPIC -fvisibility=hidden
 
-ASFLAGS_STATIC :=
-ASFLAGS_SHARED :=
+CXXFLAGS_STATIC := -Wall -pedantic
+CXXFLAGS_SHARED := -Wall -pedantic -fPIC -fvisibility=hidden
 
 ifeq ($(TARGET),UNIX)
-    CC := gcc
-    AS := as
+    AS  := as
+    CC  := gcc
+    CXX := g++
 
     LDFLAGS := -shared
     LDLIBS  :=
 else ifeq ($(TARGET),WINDOWS)
-    CC := x86_64-w64-mingw32-gcc
-    AS := x86_64-w64-mingw32-as
+    AS  := x86_64-w64-mingw32-as
+    CC  := x86_64-w64-mingw32-gcc
+    CXX := x86_64-w64-mingw32-g++
 
     LDFLAGS := -shared
     LDLIBS  :=
@@ -62,7 +67,7 @@ RM    := rm -rfv
 #                              Resources                               #
 # ==================================================================== #
 
-SRC_EXT := c s
+SRC_EXT := s c cpp
 
 SRC_DIRS := $(SRC_DIR) $(foreach SUB,$(SRC_SUBDIRS),$(SRC_DIR)/$(SUB))
 OBJ_DIRS := $(SRC_DIRS:%=$(OBJ_DIR)/static/%)\
@@ -100,6 +105,14 @@ $(OUT_STATIC): $(OBJ_STATIC) | $(BIN_DIR)
 $(OUT_SHARED): $(OBJ_SHARED) | $(BIN_DIR)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
+# compile .s files for static library
+$(OBJ_DIR)/static/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
+	$(AS) $(ASFLAGS_STATIC) $< -o $@
+
+# compile .s files for shared library
+$(OBJ_DIR)/shared/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
+	$(AS) $(ASFLAGS_SHARED) $< -o $@
+
 # compile .c files for static library
 $(OBJ_DIR)/static/%.c.$(OBJ_EXT): %.c | $(OBJ_DIRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS_STATIC) -c $< -o $@
@@ -108,13 +121,13 @@ $(OBJ_DIR)/static/%.c.$(OBJ_EXT): %.c | $(OBJ_DIRS)
 $(OBJ_DIR)/shared/%.c.$(OBJ_EXT): %.c | $(OBJ_DIRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS_SHARED) -c $< -o $@
 
-# compile .s files for static library
-$(OBJ_DIR)/static/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
-	$(AS) $(ASFLAGS_STATIC) $< -o $@
+# compile .cpp files for static library
+$(OBJ_DIR)/static/%.cpp.$(OBJ_EXT): %.cpp | $(OBJ_DIRS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_STATIC) -c $< -o $@
 
-# compile .s files for shared library
-$(OBJ_DIR)/shared/%.s.$(OBJ_EXT): %.s | $(OBJ_DIRS)
-	$(AS) $(ASFLAGS_SHARED) $< -o $@
+# compile .cpp files for shared library
+$(OBJ_DIR)/shared/%.cpp.$(OBJ_EXT): %.cpp | $(OBJ_DIRS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_SHARED) -c $< -o $@
 
 # create directories
 $(BIN_DIR) $(OBJ_DIRS):
