@@ -1,5 +1,5 @@
 # Vulcalien's Library Makefile
-# version 0.3.8
+# version 0.3.9
 
 TARGET := UNIX
 
@@ -131,7 +131,7 @@ $(OBJ_DIR)/shared/%.cpp.$(OBJ_EXT): %.cpp | $(OBJ_DIRS)
 
 # create directories
 $(BIN_DIR) $(OBJ_DIRS):
-	$(MKDIR) $@
+	@$(MKDIR) $@
 
 -include $(OBJ_STATIC:.$(OBJ_EXT)=.d)
 -include $(OBJ_SHARED:.$(OBJ_EXT)=.d)
