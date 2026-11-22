@@ -1,5 +1,5 @@
 # Vulcalien's Manual Makefile
-# version 0.1.0
+# version 0.1.1
 
 # ==================================================================== #
 #                              Basic Info                              #
@@ -42,4 +42,4 @@ clean:
 
 # create directories
 $(OUT_DIR):
-	$(MKDIR) $@
+	@$(MKDIR) $@
